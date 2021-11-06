@@ -1,11 +1,10 @@
 import { Add } from "@mui/icons-material";
-import { Grid, IconButton, TextField, Theme } from "@mui/material";
+import { DesktopDatePicker, TimePicker } from "@mui/lab";
+import { Grid, TextField } from "@mui/material";
+import clsx from "clsx";
 import { useCallback, useContext } from "react";
 import { StateContext } from "../providers/State";
-import { DesktopDatePicker, TimePicker } from "@mui/lab";
-import { makeStyles } from "@mui/styles";
-import clsx from "clsx";
-import { purple } from "@mui/material/colors";
+import { useStyles } from "./styles";
 
 export const AddTodo = () => {
   const { state, onChange, onAdd } = useContext(StateContext);
@@ -36,7 +35,7 @@ export const AddTodo = () => {
       <Grid container spacing={1}>
         {/* left side */}
         <Grid item xs={10}>
-          <Grid container spacing={1}>
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -90,14 +89,15 @@ export const AddTodo = () => {
         <Grid item xs={2}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <IconButton
-                size="large"
-                disabled={!state.todo.title}
+              <div
                 onClick={handleAdd}
-                className={clsx(classes.addButton)}
+                className={clsx({
+                  [classes.addButton]: true,
+                  [classes.disableAddButton]: !state.todo.title,
+                })}
               >
                 <Add fontSize="large" />
-              </IconButton>
+              </div>
             </Grid>
           </Grid>
         </Grid>
@@ -105,23 +105,3 @@ export const AddTodo = () => {
     </div>
   );
 };
-
-const useStyles = makeStyles((theme: Theme) => ({
-  addButton: {
-    position: "relative",
-    top: "0.9rem",
-    left: "1.9rem",
-
-    "&.MuiIconButton-root": {
-      backgroundColor: theme.palette.primary.main,
-      color: "white",
-      transition: "ease-in-out 500ms",
-      "&:hover": {
-        backgroundColor: theme.palette.secondary.main,
-      },
-    },
-    "&.Mui-disabled": {
-      backgroundColor: purple[200],
-    },
-  },
-}));

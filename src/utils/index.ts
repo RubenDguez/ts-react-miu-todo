@@ -1,1 +1,1 @@
-export { addTodo, getTodos } from "./firestore";
+export { addTodo, getTodos, updateTodo, deleteTodo } from "./firestore";

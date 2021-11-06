@@ -1,26 +1,33 @@
-import { Cancel, Delete, Edit, Update } from "@mui/icons-material";
+import { Cancel, Delete, Edit, Undo, Update } from "@mui/icons-material";
 import { DateTimePicker } from "@mui/lab";
 import {
   Switch,
   TableCell,
   TableRow,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import clsx from "clsx";
-import { useCallback, useContext, useState } from "react";
-import { ConfirmDeleteTodo, Time } from ".";
+import moment from "moment";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Confirm, Time } from ".";
 import { StateContext } from "../providers/State";
-import { IRow, TTodo } from "../types";
+import { IRow, TConfirm, TTodo } from "../types";
 import { useStyles } from "./styles";
 
-export const Row = ({ data }: IRow) => {
-  const { onDone, onUpdate } = useContext(StateContext);
+export const Row = ({ data, showVisible }: IRow) => {
+  const { onUpdate } = useContext(StateContext);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<TConfirm>("DELETE");
   const [isEdit, setIsEdit] = useState(false);
   const [localTodo, setLocalTodo] = useState<TTodo>(data);
+  const [ring, setRing] = useState(false);
+  const path = require("../assets/ring.mp3");
+
+  const alarm = useMemo(() => {
+    return new Audio(path.default);
+  }, [path]);
 
   const handleTitleChange = useCallback(
     (value: string) => {
@@ -41,10 +48,31 @@ export const Row = ({ data }: IRow) => {
     setIsEdit(false);
   }, [onUpdate, localTodo]);
 
-  if (!data.isVisible) return <></>;
+  const handleConfirm = useCallback((mode: TConfirm) => {
+    setMode(mode);
+    setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const diff =
+        (data.title, " => ", moment(Date.now()).diff(moment(data.dueDate)));
+      if (diff > -999 && diff < 999) {
+        if (!ring) {
+          alarm.play();
+          setRing(true);
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [data, ring, alarm]);
+
+  if (!showVisible && !data.isVisible) return <></>;
   return (
     <>
-      <ConfirmDeleteTodo id={data.id} open={open} onClose={setOpen} />
+      <Confirm todo={data} open={open} onClose={setOpen} mode={mode} />
       {isEdit && (
         <TableRow>
           <TableCell>
@@ -67,21 +95,22 @@ export const Row = ({ data }: IRow) => {
           </TableCell>
           <TableCell>
             <div className={classes.buttonContainer}>
-              <Tooltip title="Cancel" arrow placement="bottom">
-                <Cancel
-                  className={classes.iconButton}
-                  onClick={() => setIsEdit(false)}
-                />
-              </Tooltip>
-              <Tooltip title="Update" arrow placement="bottom">
-                <Update
-                  className={clsx({
-                    [classes.iconButton]: true,
-                    [classes.disableButton]: !localTodo.title,
-                  })}
-                  onClick={handleUpdate}
-                />
-              </Tooltip>
+              <Cancel
+                className={clsx({
+                  [classes.iconButton]: true,
+                  [classes.cancelButton]: true,
+                })}
+                onClick={() => setIsEdit(false)}
+              />
+
+              <Update
+                className={clsx({
+                  [classes.iconButton]: true,
+                  [classes.updateButton]: true,
+                  [classes.disableButton]: !localTodo.title,
+                })}
+                onClick={handleUpdate}
+              />
             </div>
           </TableCell>
         </TableRow>
@@ -101,29 +130,39 @@ export const Row = ({ data }: IRow) => {
           </TableCell>
           <TableCell>
             <div className={classes.buttonContainer}>
-              <Tooltip title="Done" arrow placement="bottom">
-                <Switch
-                  size="small"
-                  value={data.done}
-                  onClick={() => onDone(data.id)}
-                />
-              </Tooltip>
-              <Tooltip title="Edit" arrow placement="bottom">
-                <Edit
-                  onClick={() => setIsEdit(true)}
+              <Switch
+                size="small"
+                checked={data.done}
+                onClick={() => onUpdate({ ...data, done: !data.done })}
+              />
+
+              <Edit
+                onClick={() => setIsEdit(true)}
+                className={clsx({
+                  [classes.iconButton]: true,
+                  [classes.editButton]: true,
+                  [classes.disableButton]: data.done,
+                })}
+              />
+
+              {data.isVisible && (
+                <Delete
                   className={clsx({
                     [classes.iconButton]: true,
-                    [classes.editButton]: true,
-                    [classes.disableButton]: data.done,
+                    [classes.deleteButton]: true,
                   })}
+                  onClick={() => handleConfirm("DELETE")}
                 />
-              </Tooltip>
-              <Tooltip title="Delete" arrow placement="bottom">
-                <Delete
-                  className={clsx(classes.iconButton, classes.deleteButton)}
-                  onClick={() => setOpen(true)}
+              )}
+              {!data.isVisible && (
+                <Undo
+                  className={clsx({
+                    [classes.iconButton]: true,
+                    [classes.retrieveButton]: true,
+                  })}
+                  onClick={() => handleConfirm("RETRIEVE")}
                 />
-              </Tooltip>
+              )}
             </div>
           </TableCell>
         </TableRow>

@@ -25,3 +25,31 @@ export const addTodo = (todo: TTodo) =>
       resolve(resp.id);
     });
   });
+
+export const updateTodo = (todo: TTodo) =>
+  new Promise<boolean>((resolve, reject) => {
+    console.log("Updating todo in firestore...");
+    todoRef
+      .doc(todo.id)
+      .update({ ...todo, dueDate: todo.dueDate?.toString() })
+      .then(() => {
+        resolve(true);
+      })
+      .catch(() => {
+        reject(false);
+      });
+  });
+
+export const deleteTodo = (id: string) =>
+  new Promise<boolean>((resolve, reject) => {
+    console.log("Deleting todo in firestore...");
+    todoRef
+      .doc(id)
+      .delete()
+      .then(() => {
+        resolve(true);
+      })
+      .catch(() => {
+        reject(false);
+      });
+  });

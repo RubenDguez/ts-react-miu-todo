@@ -11,30 +11,30 @@ export type TTodo = {
   isVisible: boolean;
 };
 
+export type TConfirm = "DELETE" | "RETRIEVE";
+
 export type TAction =
   | { type: "CHANGE ADD"; payload: { todo: TTodo } }
   | { type: "ADD"; payload: { todo: TTodo } }
   | { type: "LOAD"; payload: { todos: TTodo[] } }
-  | { type: "DONE"; payload: { id: string } }
-  | { type: "DELETE"; payload: { id: string } }
   | { type: "UPDATE"; payload: { update: TTodo } };
 
 export interface IStateContext {
   state: typeof InitialState;
   onChange: (todo: TTodo) => void;
   onAdd: () => void;
-  onDone: (id: string) => void;
-  onDelete: (id: string) => void;
   onUpdate: (todo: TTodo) => void;
   onLoad: () => void;
 }
 
 export interface IRow {
   data: TTodo;
+  showVisible: boolean;
 }
 
-export interface IConfirmDeleteTodo {
-  id: string;
+export interface IConfirm {
+  mode: TConfirm;
+  todo: TTodo;
   open: boolean;
   onClose: Dispatch<SetStateAction<boolean>>;
 }

@@ -1,4 +1,5 @@
 import {
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +18,7 @@ export const TodoTable = () => {
   const { state, onLoad } = useContext(StateContext);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [showVisible, setShowVisible] = useState(false);
 
   useEffect(() => {
     if (state.todoList.length < 1 && !loading) {
@@ -57,11 +59,32 @@ export const TodoTable = () => {
             </TableHead>
             <TableBody>
               {state.todoList.map((row) => (
-                <Row key={row.id} data={row} />
+                <Row key={row.id} data={row} showVisible={showVisible} />
               ))}
             </TableBody>
           </Table>
-          <p className={classes.timer}>{`${moment(time).format("LL LTS")}`}</p>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div className={classes.footerContainer}>
+              <span className={classes.footerText}>Show deleted messages</span>
+              <Switch
+                className={classes.showDeletedSwitch}
+                title="Show deleted messages"
+                size="small"
+                checked={showVisible}
+                onClick={() => setShowVisible(!showVisible)}
+              />
+            </div>
+
+            <span className={classes.footerText}>{`${moment(time).format(
+              "LL LTS"
+            )}`}</span>
+          </div>
         </TableContainer>
       )}
     </>

@@ -1,12 +1,11 @@
 import { Theme } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { green, grey, purple, red, yellow } from "@mui/material/colors";
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) => ({
-  timer: {
+  footerText: {
     color: grey[500],
     textAlign: "right",
-    marginTop: "1rem",
     fontSize: "0.7rem",
   },
   typography: {
@@ -30,6 +29,16 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
     textTransform: "uppercase",
   },
+  footerContainer: {
+    paddingTop: "0.8rem",
+    paddingBottom: "0.8rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  showDeletedSwitch: {
+    marginLeft: "0.5rem",
+  },
   buttonContainer: {
     display: "flex",
     justifyContent: "end",
@@ -45,13 +54,44 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   deleteButton: {
-    color: "tomato",
+    color: red[400],
+  },
+  retrieveButton: {
+    color: green[500],
   },
   editButton: {
-    color: theme.palette.secondary.dark,
+    color: yellow[700],
+  },
+  updateButton: {
+    color: green[500],
+  },
+  cancelButton: {
+    color: red[400],
   },
   disableButton: {
     pointerEvents: "none",
-    color: "lightgray",
+    color: grey[300],
+  },
+  addButton: {
+    display: "flex",
+    position: "relative",
+    left: "1rem",
+    top: "0.7rem",
+    alignItems: "center",
+    justifyContent: "space-around",
+    transition: "ease-in-out 500ms",
+    cursor: "pointer",
+    color: "white",
+    backgroundColor: theme.palette.primary.main,
+    width: 75,
+    height: 75,
+    borderRadius: "50%",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
+  disableAddButton: {
+    pointerEvents: "none",
+    backgroundColor: purple[200],
   },
 }));

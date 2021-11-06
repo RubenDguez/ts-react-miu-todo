@@ -17,22 +17,6 @@ export const reducer = (state: TState, action: TAction): TState => {
         ...state,
         todoList: [action.payload.todo, ...state.todoList],
       };
-    case "DONE":
-      return {
-        ...state,
-        todoList: state.todoList.map((todo) => {
-          if (todo.id !== action.payload.id) return todo;
-          return { ...todo, done: !todo.done };
-        }),
-      };
-    case "DELETE":
-      return {
-        ...state,
-        todoList: state.todoList.map((todo) => {
-          if (todo.id !== action.payload.id) return todo;
-          return { ...todo, isVisible: !todo.isVisible };
-        }),
-      };
     case "UPDATE":
       return {
         ...state,

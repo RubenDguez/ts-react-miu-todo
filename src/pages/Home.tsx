@@ -2,23 +2,27 @@ import { Container, Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import clsx from "clsx";
 import { AddTodo, TodoTable } from "../components";
+import { SearchAppBar } from "../components/AppBar";
 
 export const Home = () => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md" className={classes.container}>
-      <Paper className={clsx(classes.paper)}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <AddTodo />
+    <>
+      <SearchAppBar />
+      <Container maxWidth="md" className={classes.container}>
+        <Paper className={clsx(classes.paper)}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <AddTodo />
+            </Grid>
+            <Grid item xs={12}>
+              <TodoTable />
+            </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <TodoTable />
-          </Grid>
-        </Grid>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </>
   );
 };
 

@@ -2,7 +2,7 @@ import { useCallback, useReducer } from "react";
 import { v4 } from "uuid";
 import { InitialState, reducer } from "../store";
 import { TTodo } from "../types";
-import { addTodo, getTodos } from "../utils";
+import { addTodo, getTodos, updateTodo } from "../utils";
 
 export const useStore = () => {
   const [state, dispatch] = useReducer(reducer, InitialState);
@@ -38,26 +38,19 @@ export const useStore = () => {
       });
   }, [dispatch, state]);
 
-  const onDone = useCallback(
-    (id: string) => {
-      dispatch({ type: "DONE", payload: { id } });
-    },
-    [dispatch]
-  );
-
-  const onDelete = useCallback(
-    (id: string) => {
-      dispatch({ type: "DELETE", payload: { id } });
-    },
-    [dispatch]
-  );
-
   const onUpdate = useCallback(
     (todo: TTodo) => {
-      dispatch({ type: "UPDATE", payload: { update: todo } });
+      updateTodo(todo).then((resp) => {
+        dispatch({ type: "UPDATE", payload: { update: todo } });
+        console.log(
+          resp
+            ? "Todo updated successfully..."
+            : "Something went wrong while updating todo..."
+        );
+      });
     },
     [dispatch]
   );
 
-  return { state, onChange, onAdd, onDone, onDelete, onUpdate, onLoad };
+  return { state, onChange, onAdd, onUpdate, onLoad };
 };
