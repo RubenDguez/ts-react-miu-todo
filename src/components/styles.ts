@@ -75,7 +75,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
   addButton: {
     display: "flex",
     position: "relative",
-    left: "1rem",
+    left: "1.5rem",
     top: "0.7rem",
     alignItems: "center",
     justifyContent: "space-around",
