@@ -7,7 +7,7 @@ export type TTodo = {
   id: string;
   title: string;
   dueDate: Date | null;
-  done: boolean;
+  isActive: boolean;
   isVisible: boolean;
 };
 
@@ -41,7 +41,8 @@ export interface IConfirm {
 
 export interface ITime {
   dtime: Date | null;
-  isDone: boolean;
+  isActive: boolean;
+  isVisible: boolean;
 }
 
 export enum EType {

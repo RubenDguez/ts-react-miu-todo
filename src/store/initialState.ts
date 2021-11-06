@@ -4,7 +4,7 @@ export const InitialState = {
   todo: {
     id: "",
     title: "",
-    done: false,
+    isActive: false,
     dueDate: null,
     isVisible: true,
   } as TTodo,

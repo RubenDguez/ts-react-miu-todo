@@ -33,7 +33,10 @@ export const updateTodo = (todo: TTodo) =>
     console.log("Updating todo in firestore...");
     todoRef
       .doc(todo.id)
-      .update({ ...todo, dueDate: todo.dueDate?.toString() })
+      .update({
+        ...todo,
+        dueDate: todo.dueDate ? todo.dueDate?.toString() : "",
+      })
       .then(() => {
         resolve(true);
       })

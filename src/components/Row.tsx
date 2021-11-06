@@ -121,23 +121,34 @@ export const Row = ({ data, showVisible }: IRow) => {
       )}
       {!isEdit && (
         <TableRow>
-          <TableCell>
+          <TableCell
+            className={clsx({ [classes.deletedRowCell]: !data.isVisible })}
+          >
             <Typography
               variant="body2"
-              className={clsx({ [classes.isDone]: data.done })}
+              className={clsx({ [classes.isActive]: data.isActive })}
             >
               {data.title}
             </Typography>
           </TableCell>
-          <TableCell>
-            <Time dtime={data.dueDate} isDone={data.done} />
+          <TableCell
+            className={clsx({ [classes.deletedRowCell]: !data.isVisible })}
+          >
+            <Time
+              dtime={data.dueDate}
+              isActive={data.isActive}
+              isVisible={data.isVisible}
+            />
           </TableCell>
-          <TableCell>
+          <TableCell
+            className={clsx({ [classes.deletedRowCell]: !data.isVisible })}
+          >
             <div className={classes.buttonContainer}>
               <Switch
                 size="small"
-                checked={data.done}
-                onClick={() => onUpdate({ ...data, done: !data.done })}
+                value={!data.isActive}
+                checked={!data.isActive}
+                onClick={() => onUpdate({ ...data, isActive: !data.isActive })}
               />
 
               <Edit
@@ -145,7 +156,7 @@ export const Row = ({ data, showVisible }: IRow) => {
                 className={clsx({
                   [classes.iconButton]: true,
                   [classes.editButton]: true,
-                  [classes.disableButton]: data.done,
+                  [classes.disableButton]: data.isActive,
                 })}
               />
 

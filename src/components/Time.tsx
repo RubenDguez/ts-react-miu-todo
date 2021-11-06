@@ -3,7 +3,7 @@ import moment from "moment";
 import { ITime } from "../types";
 import { useStyles } from "./styles";
 
-export const Time = ({ dtime, isDone }: ITime) => {
+export const Time = ({ dtime, isActive, isVisible }: ITime) => {
   const classes = useStyles();
   if (dtime === null) return <></>;
   return (
@@ -11,14 +11,15 @@ export const Time = ({ dtime, isDone }: ITime) => {
       <p
         className={clsx({
           [classes.typography]: true,
-          [classes.isDone]: isDone,
+          [classes.isActive]: isActive,
         })}
       >{`${moment(dtime).format("LL LT")}`}</p>
       <p
         className={clsx({
           [classes.typography]: true,
           [classes.relativeTime]: true,
-          [classes.isDone]: isDone,
+          [classes.isActive]: isActive,
+          [classes.isVisible]: !isVisible,
         })}
       >{`${moment(dtime).fromNow()}`}</p>
     </div>

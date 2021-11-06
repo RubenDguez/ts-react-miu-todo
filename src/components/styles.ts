@@ -19,8 +19,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontStyle: "italic",
     fontSize: "0.7rem",
   },
-  isDone: {
+  isActive: {
     textDecoration: "line-through",
+  },
+  isVisible: {
+    color: red[300],
   },
   headerCell: {
     "&.MuiTableCell-root": {
@@ -28,6 +31,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.primary.contrastText,
     },
     textTransform: "uppercase",
+  },
+  deletedRowCell: {
+    "&.MuiTableCell-root": {
+      backgroundColor: red[50],
+      color: red[500],
+    },
   },
   footerContainer: {
     paddingTop: "0.8rem",
