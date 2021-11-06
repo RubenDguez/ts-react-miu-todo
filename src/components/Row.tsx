@@ -12,14 +12,14 @@ import moment from "moment";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Confirm, Time } from ".";
 import { StateContext } from "../providers/State";
-import { IRow, TConfirm, TTodo } from "../types";
+import { EKey, IRow, EConfirm, TTodo } from "../types";
 import { useStyles } from "./styles";
 
 export const Row = ({ data, showVisible }: IRow) => {
   const { onUpdate } = useContext(StateContext);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<TConfirm>("DELETE");
+  const [mode, setMode] = useState<EConfirm>(EConfirm.DELETE);
   const [isEdit, setIsEdit] = useState(false);
   const [localTodo, setLocalTodo] = useState<TTodo>(data);
   const [ring, setRing] = useState(false);
@@ -29,16 +29,19 @@ export const Row = ({ data, showVisible }: IRow) => {
     return new Audio(path.default);
   }, [path]);
 
-  const handleTitleChange = useCallback(
-    (value: string) => {
-      setLocalTodo({ ...data, title: value });
-    },
-    [data]
-  );
+  const handleChange = useCallback(
+    (key: EKey, value: string | Date | null) => {
+      switch (key) {
+        case EKey.TITLE:
+          setLocalTodo({ ...data, title: value as string });
+          break;
+        case EKey.DATETIME:
+          if (value) setLocalTodo({ ...data, dueDate: value as Date });
+          break;
 
-  const handleDateTimeChange = useCallback(
-    (value: Date | null) => {
-      setLocalTodo({ ...data, dueDate: value });
+        default:
+          break;
+      }
     },
     [data]
   );
@@ -48,7 +51,7 @@ export const Row = ({ data, showVisible }: IRow) => {
     setIsEdit(false);
   }, [onUpdate, localTodo]);
 
-  const handleConfirm = useCallback((mode: TConfirm) => {
+  const handleConfirm = useCallback((mode: EConfirm) => {
     setMode(mode);
     setOpen(true);
   }, []);
@@ -81,13 +84,13 @@ export const Row = ({ data, showVisible }: IRow) => {
               fullWidth
               size="small"
               value={localTodo.title}
-              onChange={(e) => handleTitleChange(e.target.value)}
+              onChange={(e) => handleChange(EKey.TITLE, e.target.value)}
             />
           </TableCell>
           <TableCell>
             <DateTimePicker
               value={localTodo.dueDate}
-              onChange={(e) => handleDateTimeChange(e)}
+              onChange={(e) => handleChange(EKey.DATETIME, e)}
               renderInput={(params) => (
                 <TextField {...params} fullWidth size="small" />
               )}
@@ -151,7 +154,7 @@ export const Row = ({ data, showVisible }: IRow) => {
                     [classes.iconButton]: true,
                     [classes.deleteButton]: true,
                   })}
-                  onClick={() => handleConfirm("DELETE")}
+                  onClick={() => handleConfirm(EConfirm.DELETE)}
                 />
               )}
               {!data.isVisible && (
@@ -160,7 +163,7 @@ export const Row = ({ data, showVisible }: IRow) => {
                     [classes.iconButton]: true,
                     [classes.retrieveButton]: true,
                   })}
-                  onClick={() => handleConfirm("RETRIEVE")}
+                  onClick={() => handleConfirm(EConfirm.RETRIEVE)}
                 />
               )}
             </div>

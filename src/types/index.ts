@@ -11,14 +11,12 @@ export type TTodo = {
   isVisible: boolean;
 };
 
-export type TConfirm = "DELETE" | "RETRIEVE";
-
 export type TAction =
-  | { type: "CHANGE ADD"; payload: { todo: TTodo } }
-  | { type: "ADD"; payload: { todo: TTodo } }
-  | { type: "LOAD"; payload: { todos: TTodo[] } }
-  | { type: "UPDATE"; payload: { update: TTodo } }
-  | { type: "SEARCH"; payload: { search: string; isSearching: boolean } };
+  | { type: EType.CHANGE_ADD; payload: { todo: TTodo } }
+  | { type: EType.ADD; payload: { todo: TTodo } }
+  | { type: EType.LOAD; payload: { todos: TTodo[] } }
+  | { type: EType.UPDATE; payload: { update: TTodo } }
+  | { type: EType.SEARCH; payload: { search: string; isSearching: boolean } };
 
 export interface IStateContext {
   state: typeof InitialState;
@@ -35,7 +33,7 @@ export interface IRow {
 }
 
 export interface IConfirm {
-  mode: TConfirm;
+  mode: EConfirm;
   todo: TTodo;
   open: boolean;
   onClose: Dispatch<SetStateAction<boolean>>;
@@ -44,4 +42,22 @@ export interface IConfirm {
 export interface ITime {
   dtime: Date | null;
   isDone: boolean;
+}
+
+export enum EType {
+  CHANGE_ADD,
+  ADD,
+  LOAD,
+  UPDATE,
+  SEARCH,
+}
+
+export enum EConfirm {
+  DELETE,
+  RETRIEVE,
+}
+
+export enum EKey {
+  TITLE,
+  DATETIME,
 }

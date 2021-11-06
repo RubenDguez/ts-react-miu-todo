@@ -29,7 +29,6 @@ export const TodoTable = () => {
 
   useEffect(() => {
     if (state.todoList.length < 1 && !loading) {
-      console.log("loading data from firestore...");
       setLoading(true);
       onLoad();
     }
@@ -44,7 +43,7 @@ export const TodoTable = () => {
 
   return (
     <>
-      {state.todoList.length > 0 && (
+      {todoList.length > 0 && (
         <TableContainer>
           <Table size="small" stickyHeader>
             <TableHead>

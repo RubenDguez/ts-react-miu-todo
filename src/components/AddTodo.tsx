@@ -4,31 +4,35 @@ import { Grid, TextField } from "@mui/material";
 import clsx from "clsx";
 import { useCallback, useContext } from "react";
 import { StateContext } from "../providers/State";
+import { InitialState } from "../store";
+import { EKey } from "../types";
 import { useStyles } from "./styles";
 
 export const AddTodo = () => {
   const { state, onChange, onAdd } = useContext(StateContext);
-
   const classes = useStyles();
 
   const handleChange = useCallback(
-    (value) => {
-      onChange({ ...state.todo, title: value });
-    },
-    [onChange, state]
-  );
+    (key: EKey, value: string | Date | null) => {
+      switch (key) {
+        case EKey.TITLE:
+          onChange({ ...state.todo, title: value as string });
+          break;
+        case EKey.DATETIME:
+          if (value) onChange({ ...state.todo, dueDate: value as Date });
+          break;
 
-  const handleDateChange = useCallback(
-    (date: Date | null) => {
-      if (date) onChange({ ...state.todo, dueDate: date });
+        default:
+          break;
+      }
     },
     [onChange, state]
   );
 
   const handleAdd = useCallback(() => {
     onAdd();
-    onChange({ ...state.todo, title: "", id: "", dueDate: null });
-  }, [onChange, onAdd, state]);
+    onChange(InitialState.todo);
+  }, [onChange, onAdd]);
 
   return (
     <div style={{ marginBottom: "1rem" }}>
@@ -42,7 +46,7 @@ export const AddTodo = () => {
                 fullWidth
                 label="Title"
                 size="small"
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => handleChange(EKey.TITLE, e.target.value)}
                 value={state.todo.title}
                 InputLabelProps={{
                   shrink: true,
@@ -54,7 +58,7 @@ export const AddTodo = () => {
                 label="Due Date"
                 inputFormat="MM/dd/yyyy"
                 value={state.todo.dueDate}
-                onChange={(e) => handleDateChange(e)}
+                onChange={(e) => handleChange(EKey.DATETIME, e)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -71,7 +75,7 @@ export const AddTodo = () => {
                 label="Time"
                 inputFormat="hh:mm"
                 value={state.todo.dueDate}
-                onChange={(e) => handleDateChange(e)}
+                onChange={(e) => handleChange(EKey.DATETIME, e)}
                 renderInput={(params) => (
                   <TextField
                     {...params}

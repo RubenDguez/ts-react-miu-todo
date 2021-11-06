@@ -1,23 +1,23 @@
-import { TAction, TState } from "../types";
+import { EType, TAction, TState } from "../types";
 
 export const reducer = (state: TState, action: TAction): TState => {
   switch (action.type) {
-    case "LOAD":
+    case EType.LOAD:
       return {
         ...state,
         todoList: action.payload.todos,
       };
-    case "CHANGE ADD":
+    case EType.CHANGE_ADD:
       return {
         ...state,
         todo: action.payload.todo,
       };
-    case "ADD":
+    case EType.ADD:
       return {
         ...state,
         todoList: [action.payload.todo, ...state.todoList],
       };
-    case "UPDATE":
+    case EType.UPDATE:
       return {
         ...state,
         todoList: state.todoList.map((todo) => {
@@ -25,7 +25,7 @@ export const reducer = (state: TState, action: TAction): TState => {
           return { ...action.payload.update };
         }),
       };
-    case "SEARCH":
+    case EType.SEARCH:
       return {
         ...state,
         search: action.payload.search,
