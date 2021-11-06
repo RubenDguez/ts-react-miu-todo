@@ -19,7 +19,6 @@
 .env.test.local
 .env.production.local
 .vscode
-*.d.ts
 
 npm-debug.log*
 yarn-debug.log*
