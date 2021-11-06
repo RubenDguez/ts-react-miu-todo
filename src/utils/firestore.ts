@@ -11,7 +11,7 @@ export const getTodos = () =>
             ({
               ...doc.data(),
               id: doc.id,
-              dueDate: new Date(doc.data().dueDate),
+              dueDate: doc.data().dueDate ? new Date(doc.data().dueDate) : null,
             } as TTodo)
         )
       );
@@ -21,9 +21,11 @@ export const getTodos = () =>
 export const addTodo = (todo: TTodo) =>
   new Promise<string>((resolve) => {
     console.log("Adding todo to firestore...");
-    todoRef.add({ ...todo, dueDate: todo.dueDate?.toString() }).then((resp) => {
-      resolve(resp.id);
-    });
+    todoRef
+      .add({ ...todo, dueDate: todo.dueDate ? todo.dueDate?.toString() : "" })
+      .then((resp) => {
+        resolve(resp.id);
+      });
   });
 
 export const updateTodo = (todo: TTodo) =>

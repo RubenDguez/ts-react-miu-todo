@@ -58,12 +58,13 @@ export const Row = ({ data, showVisible }: IRow) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const diff =
-        (data.title, " => ", moment(Date.now()).diff(moment(data.dueDate)));
-      if (diff > -999 && diff < 999) {
-        if (!ring) {
-          alarm.play();
-          setRing(true);
+      if (data.dueDate !== null) {
+        const diff = moment(Date.now()).diff(moment(data.dueDate));
+        if (diff > -999 && diff < 999) {
+          if (!ring) {
+            alarm.play();
+            setRing(true);
+          }
         }
       }
     }, 1000);
