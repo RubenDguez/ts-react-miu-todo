@@ -17,7 +17,8 @@ export type TAction =
   | { type: "CHANGE ADD"; payload: { todo: TTodo } }
   | { type: "ADD"; payload: { todo: TTodo } }
   | { type: "LOAD"; payload: { todos: TTodo[] } }
-  | { type: "UPDATE"; payload: { update: TTodo } };
+  | { type: "UPDATE"; payload: { update: TTodo } }
+  | { type: "SEARCH"; payload: { search: string; isSearching: boolean } };
 
 export interface IStateContext {
   state: typeof InitialState;
@@ -25,6 +26,7 @@ export interface IStateContext {
   onAdd: () => void;
   onUpdate: (todo: TTodo) => void;
   onLoad: () => void;
+  onSearch: (search: string, isSearching: boolean) => void;
 }
 
 export interface IRow {

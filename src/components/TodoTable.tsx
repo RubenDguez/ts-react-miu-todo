@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@mui/material";
 import moment from "moment";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Row } from ".";
 import { StateContext } from "../providers/State";
 import { useStyles } from "./styles";
@@ -19,6 +19,13 @@ export const TodoTable = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [showVisible, setShowVisible] = useState(false);
+
+  const todoList = useMemo(() => {
+    if (!state.isSearching) return state.todoList;
+    return state.todoList.filter((f) =>
+      f.title.toLowerCase().match(state.search.toLowerCase())
+    );
+  }, [state]);
 
   useEffect(() => {
     if (state.todoList.length < 1 && !loading) {
@@ -58,7 +65,7 @@ export const TodoTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {state.todoList.map((row) => (
+              {todoList.map((row) => (
                 <Row key={row.id} data={row} showVisible={showVisible} />
               ))}
             </TableBody>

@@ -52,5 +52,12 @@ export const useStore = () => {
     [dispatch]
   );
 
-  return { state, onChange, onAdd, onUpdate, onLoad };
+  const onSearch = useCallback(
+    (search: string, isSearching: boolean) => {
+      dispatch({ type: "SEARCH", payload: { search, isSearching } });
+    },
+    [dispatch]
+  );
+
+  return { state, onChange, onAdd, onUpdate, onLoad, onSearch };
 };

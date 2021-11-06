@@ -13,13 +13,16 @@ export const StateContext = createContext<IStateContext>({
   onAdd: () => {},
   onUpdate: () => {},
   onLoad: () => {},
+  onSearch: () => {},
 });
 
 export const State = ({ children }: IStore) => {
-  const { state, onChange, onAdd, onUpdate, onLoad } = useStore();
+  const { state, onChange, onAdd, onUpdate, onLoad, onSearch } = useStore();
 
   return (
-    <StateContext.Provider value={{ state, onChange, onAdd, onUpdate, onLoad }}>
+    <StateContext.Provider
+      value={{ state, onChange, onAdd, onUpdate, onLoad, onSearch }}
+    >
       {children}
     </StateContext.Provider>
   );

@@ -25,7 +25,12 @@ export const reducer = (state: TState, action: TAction): TState => {
           return { ...action.payload.update };
         }),
       };
-
+    case "SEARCH":
+      return {
+        ...state,
+        search: action.payload.search,
+        isSearching: action.payload.isSearching,
+      };
     default:
       return state;
   }

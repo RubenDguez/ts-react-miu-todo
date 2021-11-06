@@ -1,6 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
+import { useCallback, useContext } from "react";
+import { StateContext } from "../../providers/State";
 
 const CSearch = styled("div")(({ theme }) => ({
   position: "relative",
@@ -45,6 +47,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const Search = () => {
+  const { onSearch } = useContext(StateContext);
+
+  const handleChange = useCallback(
+    (e: string) => {
+      onSearch(e, e.length > 0);
+    },
+    [onSearch]
+  );
+
   return (
     <CSearch>
       <SearchIconWrapper>
@@ -53,6 +64,7 @@ export const Search = () => {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+        onChange={(e) => handleChange(e.target.value)}
       />
     </CSearch>
   );
