@@ -126,7 +126,7 @@ export const Row = ({ data, showVisible }: IRow) => {
           >
             <Typography
               variant="body2"
-              className={clsx({ [classes.isActive]: data.isActive })}
+              className={clsx({ [classes.isNotActive]: !data.isActive })}
             >
               {data.title}
             </Typography>
@@ -146,8 +146,8 @@ export const Row = ({ data, showVisible }: IRow) => {
             <div className={classes.buttonContainer}>
               <Switch
                 size="small"
-                value={!data.isActive}
-                checked={!data.isActive}
+                value={data.isActive}
+                checked={data.isActive}
                 onClick={() => onUpdate({ ...data, isActive: !data.isActive })}
               />
 
@@ -156,7 +156,7 @@ export const Row = ({ data, showVisible }: IRow) => {
                 className={clsx({
                   [classes.iconButton]: true,
                   [classes.editButton]: true,
-                  [classes.disableButton]: data.isActive,
+                  [classes.disableButton]: !data.isActive,
                 })}
               />
 

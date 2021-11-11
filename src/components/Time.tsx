@@ -11,14 +11,14 @@ export const Time = ({ dtime, isActive, isVisible }: ITime) => {
       <p
         className={clsx({
           [classes.typography]: true,
-          [classes.isActive]: isActive,
+          [classes.isNotActive]: !isActive,
         })}
       >{`${moment(dtime).format("LL LT")}`}</p>
       <p
         className={clsx({
           [classes.typography]: true,
           [classes.relativeTime]: true,
-          [classes.isActive]: isActive,
+          [classes.isNotActive]: !isActive,
           [classes.isVisible]: !isVisible,
         })}
       >{`${moment(dtime).fromNow()}`}</p>

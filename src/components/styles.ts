@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     fontStyle: "italic",
     fontSize: "0.7rem",
   },
-  isActive: {
+  isNotActive: {
     textDecoration: "line-through",
   },
   isVisible: {
